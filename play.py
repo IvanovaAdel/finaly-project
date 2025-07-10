@@ -109,4 +109,75 @@ while True:
         print(f"Поздравляем! Вы угадали за {attempts} попыток.")
         break
 
+# 5. крестики нолики
+
+def print_board(board):
+    for i in range(3):
+        print(f" {board[i*3]} | {board[i*3+1]} | {board[i*3+2]} ")
+        if i < 2:
+            print("-----------")
+
+def check_winner(board):
+    # Проверяем строки, столбцы и диагонали
+    win_combinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],  # строки
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],  # столбцы
+        [0, 4, 8], [2, 4, 6]              # диагонали
+    ]
+    
+    for combo in win_combinations:
+        if board[combo[0]] == board[combo[1]] == board[combo[2]] != " ":
+            return board[combo[0]]
+    return None
+
+def is_board_full(board):
+    return " " not in board
+
+def tic_tac_toe():
+    board = [" "] * 9
+    current_player = "X"
+    
+    print("Добро пожаловать в Крестики-нолики!")
+    print("Для хода введите число от 1 до 9, как на клавиатуре телефона:")
+    print(" 1 | 2 | 3 ")
+    print("-----------")
+    print(" 4 | 5 | 6 ")
+    print("-----------")
+    print(" 7 | 8 | 9 ")
+    
+    while True:
+        print_board(board)
+        position = input(f"Игрок {current_player}, ваш ход (1-9): ")
+        
+        try:
+            position = int(position) - 1  # преобразуем в индекс 0-8
+            if position < 0 or position > 8:
+                print("Пожалуйста, введите число от 1 до 9!")
+                continue
+                
+            if board[position] != " ":
+                print("Эта клетка уже занята! Попробуйте другую.")
+                continue
+                
+            board[position] = current_player
+            
+            winner = check_winner(board)
+            if winner:
+                print_board(board)
+                print(f"Игрок {winner} победил! Поздравляем!")
+                break
+                
+            if is_board_full(board):
+                print_board(board)
+                print("Ничья! Игра окончена.")
+                break
+                
+            current_player = "O" if current_player == "X" else "X"
+            
+        except ValueError:
+            print("Пожалуйста, введите число от 1 до 9!")
+
+if __name__ == "__main__":
+    tic_tac_toe()
+
   
